@@ -1,0 +1,70 @@
+@import '@/styles/colors.module.scss';
+
+.categoryContainer {
+  background-color: $orange;
+  color: $white;
+  font-size: 1.4rem;
+  padding: 0.8rem 1.6rem;
+  border-radius: 0.4rem;
+  text-align: center;
+  position: relative;
+  z-index: 5;
+
+  &.isEditing {
+    background-color: $white;
+    color: $black;
+    font-family: inherit;
+    outline: none;
+    border: 1px solid $grey;
+  }
+
+  .addSubcategoryButton {
+    position: absolute;
+    top: 50%;
+    right: -2.4rem;
+    transform: translateY(-50%);
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    background-color: $grey;
+    color: $white;
+  }
+
+  .editCategoryButton {
+    position: absolute;
+    top: 50%;
+    right: -4.8rem;
+    transform: translateY(-50%);
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    background-color: $grey;
+    color: $white;
+  }
+
+  .deleteCategoryButton {
+    position: absolute;
+    top: 50%;
+    right: -7.2rem;
+    transform: translateY(-50%);
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    background-color: $red;
+    color: $white;
+  }
+
+  .subCategoriesContainer {
+    position: absolute;
+    top: 8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    gap: 12rem;
+    z-index: 3;
+  }
+}

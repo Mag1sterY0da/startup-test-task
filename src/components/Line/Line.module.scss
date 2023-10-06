@@ -1,0 +1,10 @@
+.line {
+  position: absolute;
+  top: 0;
+  z-index: -1;
+
+  line {
+    stroke: $grey;
+    stroke-width: 2;
+  }
+}

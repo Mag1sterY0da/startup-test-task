@@ -1,0 +1,22 @@
+@import '@/styles/colors.module.scss';
+
+.button {
+  border: none;
+  background-color: $white;
+  border-radius: 0.4rem;
+  color: $grey;
+  width: 4.4rem;
+  height: 4.4rem;
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  font-size: 2.4rem;
+
+  &:hover {
+    background-color: $grey;
+    color: $white;
+  }
+}

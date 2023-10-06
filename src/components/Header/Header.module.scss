@@ -1,0 +1,36 @@
+@import '@/styles/colors.module.scss';
+
+.header {
+  background-color: $lightWhite;
+  padding: 2.4rem 0;
+  z-index: 10;
+
+  .headerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .headerHeadingContainer {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+
+      .headerHeading {
+        font-size: 2.4rem;
+        font-weight: 500;
+      }
+
+      .servicesCounter {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $orange;
+        color: $white;
+        border-radius: 1rem;
+        width: 2.4rem;
+        height: 2.4rem;
+        font-size: 1.2rem;
+      }
+    }
+  }
+}

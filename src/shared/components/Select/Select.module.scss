@@ -1,0 +1,26 @@
+@import '@/styles/colors.module.scss';
+
+.select {
+  border: none;
+  background-color: $white;
+  border-radius: 0.4rem;
+  color: $grey;
+  width: 8rem;
+  height: 4.4rem;
+  padding: 1rem;
+  appearance: none;
+  cursor: pointer;
+  text-align: center;
+  overflow: hidden;
+  font-family: inherit;
+
+  &:hover {
+    background-color: $grey;
+    color: $white;
+  }
+
+  &:focus {
+    border: none;
+    outline: none;
+  }
+}
