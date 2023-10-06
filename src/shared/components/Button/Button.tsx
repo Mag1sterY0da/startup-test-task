@@ -7,8 +7,8 @@ type ButtonProps = {
 };
 
 const Button = ({ children, className, ...props }: ButtonProps) => {
-  const defaultClassName = styles.button;
-  const finalClassName = className
+  const defaultClassName: string = styles.button;
+  const finalClassName: string = className
     ? `${defaultClassName} ${className}`
     : defaultClassName;
 

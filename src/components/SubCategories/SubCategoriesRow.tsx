@@ -1,8 +1,9 @@
+import { Category } from '@/classes/Category';
+import { SubCategory } from '@/classes/SubCategory';
 import Button from '@/shared/components/Button/Button';
-import { Category } from '@/types/Category';
-import { SubCategory } from '@/types/SubCategory';
 import { useState } from 'react';
 import CreateModal from '../CreateModal/CreateModal';
+import ServicesRow from '../Services/ServicesRow';
 import SubCategoryInput from '../SubCategoryInput/SubCategoryInput';
 import styles from './SubCategoriesRow.module.scss';
 
@@ -18,37 +19,33 @@ const SubCategoriesRow = ({
   setCategories
 }: SubCategoryRowProps) => {
   const [showModal, setShowModal] = useState<boolean>(false);
-  const addSubCategoryButton = () => {
-    setShowModal(true);
+  const [subCategoryId, setSubCategoryId] = useState<number>();
+
+  const openModal = (): void => setShowModal(true);
+
+  const closeModal = (): void => setShowModal(false);
+
+  const addSubCategoryButton = (subCategoryId: number): void => {
+    openModal();
+    setSubCategoryId(subCategoryId);
   };
 
-  // const handleAddSubCategoryButton = () => {};
-
-  const editSubCategoryButton = (subCategoryId: number) => {
+  const editSubCategoryButton = (subCategoryId: number): void => {
     setCategories(prev =>
       prev.map(cat => {
-        if (cat.id === categoryId && cat.subCategories) {
-          const updatedSubCategories = cat.subCategories.map(sCat => {
-            if (sCat.id === subCategoryId) {
-              return { ...sCat, isEditing: true };
-            }
-            return sCat;
-          });
-          return { ...cat, subCategories: updatedSubCategories };
+        if (cat.getId() === categoryId) {
+          cat.editSubCategory(subCategoryId);
         }
         return cat;
       })
     );
   };
 
-  const deleteSubCategoryButton = (id: number) => {
+  const deleteSubCategoryButton = (id: number): void => {
     setCategories(prev =>
       prev.map(cat => {
-        if (cat.subCategories) {
-          const updatedSubCategories = cat.subCategories.filter(
-            sCat => sCat.id !== id
-          );
-          return { ...cat, subCategories: updatedSubCategories };
+        if (cat.getId() === categoryId) {
+          cat.removeSubCategory(id);
         }
         return cat;
       })
@@ -56,7 +53,7 @@ const SubCategoriesRow = ({
   };
 
   return subCategories?.map((subCategory, i) =>
-    subCategory.isEditing ? (
+    subCategory.getIsEditing() ? (
       <div key={i} style={{ position: 'relative' }}>
         <SubCategoryInput
           categoryId={categoryId}
@@ -69,23 +66,39 @@ const SubCategoriesRow = ({
         {subCategory.name}
         <Button
           className={styles.addServiceButton}
-          onClick={() => addSubCategoryButton()}
+          onClick={() => addSubCategoryButton(subCategory.getId())}
         >
-          +
+          <i className='ri-add-line ri-xs'></i>
         </Button>
-        {showModal && <CreateModal />}
+        {showModal && subCategoryId === subCategory.getId() && (
+          <CreateModal
+            categoryId={categoryId}
+            subCategoryId={subCategoryId}
+            setCategories={setCategories}
+            closeModal={closeModal}
+          />
+        )}
         <Button
           className={styles.editSubCategoryButton}
-          onClick={() => editSubCategoryButton(subCategory.id)}
+          onClick={() => editSubCategoryButton(subCategory.getId())}
         >
-          e
+          <i className='ri-pencil-line ri-xs'></i>
         </Button>
         <Button
           className={styles.deleteSubCategoryButton}
-          onClick={() => deleteSubCategoryButton(subCategory.id)}
+          onClick={() => deleteSubCategoryButton(subCategory.getId())}
         >
-          x
+          <i className='ri-close-line ri-xs'></i>
         </Button>
+        <div className={styles.subCategoriesContainer}>
+          <ServicesRow
+            key={i}
+            subCategories={[
+              ...subCategory.subCategories,
+              ...subCategory.services
+            ]}
+          />
+        </div>
       </div>
     )
   );

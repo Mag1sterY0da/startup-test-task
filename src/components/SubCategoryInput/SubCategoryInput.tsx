@@ -1,6 +1,6 @@
+import { Category } from '@/classes/Category';
+import { SubCategory } from '@/classes/SubCategory';
 import Button from '@/shared/components/Button/Button';
-import { Category } from '@/types/Category';
-import { SubCategory } from '@/types/SubCategory';
 import { useRef } from 'react';
 import styles from './SubCategoryInput.module.scss';
 
@@ -15,33 +15,29 @@ const SubCategoryInput = ({
   subCategory,
   setCategories
 }: SubCategoryInputProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef: React.MutableRefObject<HTMLInputElement | null> =
+    useRef<HTMLInputElement>(null);
 
-  const declineEditingButton = (id: number) => {
+  const declineEditingButton = (id: number): void => {
     setCategories(prev =>
       prev.map(cat => {
-        if (cat.id === categoryId) {
-          const updatedSubCategories = cat.subCategories?.filter(
-            sCat => sCat.id !== id
-          );
-          return { ...cat, subCategories: updatedSubCategories };
+        if (cat.getId() === categoryId) {
+          cat.removeSubCategory(id);
         }
         return cat;
       })
     );
   };
 
-  const approveEditingButton = (id: number) => {
-    const inputValue = inputRef.current?.value || '';
+  const approveEditingButton = (id: number): void => {
+    const inputValue: string = inputRef.current?.value || '';
     setCategories(prev =>
-      prev.map(cat => ({
-        ...cat,
-        subCategories: cat.subCategories?.map(sCat => ({
-          ...sCat,
-          name: sCat.id === id ? inputValue : sCat.name,
-          isEditing: false
-        }))
-      }))
+      prev.map(cat => {
+        if (cat.getId() === categoryId) {
+          cat.approveSubCategoryEditing(id, inputValue);
+        }
+        return cat;
+      })
     );
   };
 
@@ -55,15 +51,15 @@ const SubCategoryInput = ({
       />
       <Button
         className={styles.declineEditingButton}
-        onClick={() => declineEditingButton(subCategory.id)}
+        onClick={() => declineEditingButton(subCategory.getId())}
       >
-        x
+        <i className='ri-close-line ri-xs'></i>
       </Button>
       <Button
         className={styles.approveEditingButton}
-        onClick={() => approveEditingButton(subCategory.id)}
+        onClick={() => approveEditingButton(subCategory.getId())}
       >
-        y
+        <i className='ri-check-line ri-xs'></i>
       </Button>
     </>
   );

@@ -1,5 +1,6 @@
+import { Category } from '@/classes/Category';
+import { SubCategory } from '@/classes/SubCategory';
 import Button from '@/shared/components/Button/Button';
-import { Category } from '@/types/Category';
 import CategoryInput from '../CategoryInput/CategoryInput';
 import SubCategoriesRow from '../SubCategories/SubCategoriesRow';
 import styles from './CategoriesRow.module.scss';
@@ -10,34 +11,33 @@ type CategoriesRowProps = {
 };
 
 const CategoriesRow = ({ categories, setCategories }: CategoriesRowProps) => {
-  const addSubCategoryButton = (id: number) => {
-    const newSubCategory = { id: Math.random(), name: '', isEditing: true };
-
-    const updatedCategories = categories.map(cat => {
-      if (cat.id === id) {
-        return {
-          ...cat,
-          subCategories: [...(cat.subCategories || []), newSubCategory]
-        };
+  const addSubCategoryButton = (id: number): void => {
+    const newSubCategory: SubCategory = new SubCategory();
+    const updatedCategories: Category[] = categories.map(cat => {
+      if (cat.getId() === id) {
+        cat.addSubCategory(newSubCategory);
       }
       return cat;
     });
-
     setCategories(updatedCategories);
   };
 
-  const editCategoryButton = (id: number) => {
-    setCategories(prev => [
-      ...prev.map(cat => (cat.id === id ? { ...cat, isEditing: true } : cat))
-    ]);
+  const editCategoryButton = (id: number): void => {
+    const updatedCategories: Category[] = categories.map(cat => {
+      if (cat.getId() === id) {
+        cat.setIsEditing(true);
+      }
+      return cat;
+    });
+    setCategories(updatedCategories);
   };
 
-  const deleteCategoryButton = (id: number) => {
-    setCategories(prev => [...prev.filter(cat => cat.id !== id)]);
+  const deleteCategoryButton = (id: number): void => {
+    setCategories(prev => [...prev.filter(cat => cat.getId() !== id)]);
   };
 
   return categories.map((category, i) =>
-    category.isEditing ? (
+    category.getIsEditing() ? (
       <div key={i} style={{ position: 'relative' }}>
         <CategoryInput
           category={category}
@@ -50,29 +50,26 @@ const CategoriesRow = ({ categories, setCategories }: CategoriesRowProps) => {
         {category.name}
         <Button
           className={styles.addSubcategoryButton}
-          onClick={() => addSubCategoryButton(category.id)}
+          onClick={() => addSubCategoryButton(category.getId())}
         >
-          +
+          <i className='ri-add-line ri-xs'></i>
         </Button>
         <Button
           className={styles.editCategoryButton}
-          onClick={() => editCategoryButton(category.id)}
+          onClick={() => editCategoryButton(category.getId())}
         >
-          e
+          <i className='ri-pencil-line ri-xs'></i>
         </Button>
         <Button
           className={styles.deleteCategoryButton}
-          onClick={() => deleteCategoryButton(category.id)}
+          onClick={() => deleteCategoryButton(category.getId())}
         >
-          x
+          <i className='ri-close-line ri-xs'></i>
         </Button>
-        <div
-          className={styles.subCategoriesContainer}
-          // ref={categoriesContainerRef}
-        >
+        <div className={styles.subCategoriesContainer}>
           <SubCategoriesRow
             key={i}
-            categoryId={category.id}
+            categoryId={category.getId()}
             subCategories={category.subCategories}
             setCategories={setCategories}
           />

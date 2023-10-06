@@ -9,6 +9,43 @@
   background-color: #f0f0f0;
   user-select: none;
   cursor: move;
+  position: relative;
+
+  .changePositionButton {
+    position: absolute;
+    width: 10rem;
+    z-index: 5;
+    background-color: $grey;
+    color: $white;
+
+    &.up {
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &.down {
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &.left {
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: auto;
+      height: 10rem;
+    }
+
+    &.right {
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      width: auto;
+      height: 10rem;
+    }
+  }
 
   .draggableObjects {
     display: flex;
@@ -34,8 +71,8 @@
         top: 50%;
         right: -2.4rem;
         transform: translateY(-50%);
-        width: 1.6rem;
-        height: 1.6rem;
+        width: 2rem;
+        height: 2rem;
         font-size: 1.8rem;
         border-radius: 50%;
         background-color: $grey;

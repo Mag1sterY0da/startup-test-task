@@ -1,5 +1,5 @@
+import { Category } from '@/classes/Category';
 import Button from '@/shared/components/Button/Button';
-import { Category } from '@/types/Category';
 import { useRef } from 'react';
 import styles from './CategoryInput.module.scss';
 
@@ -17,18 +17,19 @@ const CategoryInput = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const declineEditingButton = (id: number) => {
-    setCategories(categories.filter(cat => cat.id !== id));
+    setCategories(categories.filter(cat => cat.getId() !== id));
   };
 
-  const approveEditingButton = () => {
+  const approveEditingButton = (id: number) => {
     const inputValue = inputRef.current?.value || '';
-    setCategories(prev =>
-      prev.map(cat =>
-        cat.id === category.id
-          ? { ...cat, name: inputValue, isEditing: false }
-          : cat
-      )
-    );
+    const updatedCategories = categories.map(cat => {
+      if (cat.getId() === id) {
+        cat.setName(inputValue);
+        cat.setIsEditing(false);
+      }
+      return cat;
+    });
+    setCategories(updatedCategories);
   };
 
   return (
@@ -41,13 +42,13 @@ const CategoryInput = ({
       />
       <Button
         className={styles.declineEditingButton}
-        onClick={() => declineEditingButton(category.id)}
+        onClick={() => declineEditingButton(category.getId())}
       >
-        x
+        <i className='ri-close-line ri-xs'></i>
       </Button>
       <Button
         className={styles.approveEditingButton}
-        onClick={() => approveEditingButton()}
+        onClick={() => approveEditingButton(category.getId())}
       >
         y
       </Button>
