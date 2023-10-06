@@ -36,46 +36,50 @@ const CategoriesRow = ({ categories, setCategories }: CategoriesRowProps) => {
     setCategories(prev => [...prev.filter(cat => cat.getId() !== id)]);
   };
 
-  return categories.map((category, i) =>
-    category.getIsEditing() ? (
-      <div key={i} style={{ position: 'relative' }}>
-        <CategoryInput
-          category={category}
-          categories={categories}
-          setCategories={setCategories}
-        />
-      </div>
-    ) : (
-      <div key={i} className={styles.categoryContainer}>
-        {category.name}
-        <Button
-          className={styles.addSubcategoryButton}
-          onClick={() => addSubCategoryButton(category.getId())}
-        >
-          <i className='ri-add-line ri-xs'></i>
-        </Button>
-        <Button
-          className={styles.editCategoryButton}
-          onClick={() => editCategoryButton(category.getId())}
-        >
-          <i className='ri-pencil-line ri-xs'></i>
-        </Button>
-        <Button
-          className={styles.deleteCategoryButton}
-          onClick={() => deleteCategoryButton(category.getId())}
-        >
-          <i className='ri-close-line ri-xs'></i>
-        </Button>
-        <div className={styles.subCategoriesContainer}>
-          <SubCategoriesRow
-            key={i}
-            categoryId={category.getId()}
-            subCategories={category.subCategories}
-            setCategories={setCategories}
-          />
-        </div>
-      </div>
-    )
+  return (
+    <>
+      {categories.map((category, i) =>
+        category.getIsEditing() ? (
+          <div key={i} style={{ position: 'relative' }}>
+            <CategoryInput
+              category={category}
+              categories={categories}
+              setCategories={setCategories}
+            />
+          </div>
+        ) : (
+          <div key={i} className={styles.categoryContainer}>
+            {category.name}
+            <Button
+              className={styles.addSubcategoryButton}
+              onClick={() => addSubCategoryButton(category.getId())}
+            >
+              <i className='ri-add-line ri-xs'></i>
+            </Button>
+            <Button
+              className={styles.editCategoryButton}
+              onClick={() => editCategoryButton(category.getId())}
+            >
+              <i className='ri-pencil-line ri-xs'></i>
+            </Button>
+            <Button
+              className={styles.deleteCategoryButton}
+              onClick={() => deleteCategoryButton(category.getId())}
+            >
+              <i className='ri-close-line ri-xs'></i>
+            </Button>
+            <div className={styles.subCategoriesContainer}>
+              <SubCategoriesRow
+                key={i}
+                categoryId={category.getId()}
+                subCategories={category.subCategories}
+                setCategories={setCategories}
+              />
+            </div>
+          </div>
+        )
+      )}
+    </>
   );
 };
 
